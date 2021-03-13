@@ -14,7 +14,7 @@ var storage = multer.diskStorage({
         cb(null, Date.now() + '-' + file.originalname);
     }
 })
-//git Test
+//git
 
 var upload = multer({storage: storage})
 
