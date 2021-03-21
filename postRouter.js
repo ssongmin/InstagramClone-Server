@@ -23,12 +23,19 @@ router.post('/postInsert',upload.any(), insertPost);
 
 function getPostList(req, res, next){
 
+    var search = req.query.search;
+
     pool.getConnection(function(err, conn){
 
         if(err){
             console.log(err);
         }
-        var postSql = "SELECT * FROM POST_TB";
+        var postSql = "";
+        if(search){
+            postSql = "SELECT * FROM POST_TB WHERE post_content LIKE '%"+search+"%'";
+        }else{
+            postSql = "SELECT * FROM POST_TB";
+        }
         conn.query(postSql, function(err, result){
             if(err){
                 console.log(err);
@@ -57,7 +64,8 @@ function getPostList(req, res, next){
                         }
                     }
                 }
-                res.send({isSuccess: true, data: result});
+                res.send({isSuccess: true,code: 1, data: [{user_sq_fk:1, post_content: 'test', favoriteCount: 0, user_profile_image:'tt'}]});
+                // res.send({isSuccess: true, data: result});
                 conn.release();
                 return;
             });
